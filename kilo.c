@@ -7,6 +7,13 @@
 
 struct termios orig_termios;
 
+struct editorConfig
+{
+    struct termios orig_termios;
+};
+
+struct editorConfig E;
+
 #define CTRL_KEY(k) ((k) & 0x1f)
 
 void die(char const *err_msg)
@@ -23,13 +30,16 @@ void disableRawMode()
 
 void enableRawMode()
 {
+    if(tcgetattr(STDIN_FILENO, &E.orig_termios) == -1)
+        die("tcgetattr");
     if(tcgetattr(STDIN_FILENO, &orig_termios) == -1)
-    die("tcgetattr");
+        die("tcgetattr");
     atexit(disableRawMode);
 
-    struct termios raw = orig_termios;
+    //struct termios raw = orig_termios;
     //tcgetattr(STDIN_FILENO, &raw);
 
+    struct termios raw = E.orig_termios;
     raw.c_iflag &= ~(IXON | ICRNL | BRKINT | ICRNL | ISTRIP);
     raw.c_oflag &= ~(OPOST);
     raw.c_cflag &= ~(CS8);
@@ -51,6 +61,12 @@ char editorReadKey()
     return c;
 }
 
+void editorRefreshScreen()
+{
+    if(write(STDOUT_FILENO, "\x1b[2J", 4) < 0) die("write \x1b[2J");
+    if(write(STDOUT_FILENO, "\x1b[H", 3) < 0) die("write \x1b[H");
+}
+
 void editorProcessKeypress()
 {
     char c = editorReadKey();
@@ -69,6 +85,7 @@ int main(void)
 
     while(1)
     {
+        editorRefreshScreen();
         editorProcessKeypress();
     };
     return EXIT_SUCCESS;
