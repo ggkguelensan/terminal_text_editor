@@ -1,39 +1,13 @@
-#include <terminal.h>
-
-void die(char const *err_msg)
-{
-    if(write(STDOUT_FILENO, "\x1b[2J", 4) < 0)
-    die("write \x1b[2J");
-    if(write(STDOUT_FILENO, "\x1b[H", 3) < 0)
-    die("write \x1b[H");
-
-    perror(err_msg);
-    exit(EXIT_FAILURE);
-}
+#include "terminal.h"
 
 void disableRawMode(void)
 {
-    if(tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios) == -1)
-    die("tcsetattr");
-}
-
-char editorReadKey(void)
-{
-    int nread;
-    char c;
-    while((nread = read(STDIN_FILENO, &c, 1)) != 1)
-    {
-        if(nread == -1 && errno != EAGAIN) die("read");
-    }
-    return c;
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios);
 }
 
 void enableRawMode(void)
 {
-    if(tcgetattr(STDIN_FILENO, &E.orig_termios) == -1)
-        die("tcgetattr");
-    if(tcgetattr(STDIN_FILENO, &orig_termios) == -1)
-        die("tcgetattr");
+    tcgetattr(STDIN_FILENO, &E.orig_termios);
     atexit(disableRawMode);
 
     //struct termios raw = orig_termios;
@@ -47,6 +21,5 @@ void enableRawMode(void)
     raw.c_cc[VMIN] = 0;
     raw.c_cc[VTIME] = 1;
 
-    if(tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw))
-    die("tcsetattr");
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }

@@ -2,10 +2,13 @@
 #define TERMINAL_H
 #endif
 
+#include "error_handling.h"
 #include <termios.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 struct editorConfig E;
 
@@ -16,7 +19,5 @@ struct editorConfig
     struct termios orig_termios;
 };
 
-void die(char const *err_msg);
 void disableRawMode(void);
 void enableRawMode(void);
-char editorReadKey(void);
