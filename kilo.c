@@ -1,4 +1,3 @@
-#include "error_handling.h"
 #include "terminal.h"
 #include "input.h"
 #include "output.h"

@@ -2,8 +2,8 @@
 #define ERROR_HANDLING_H
 #endif
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <errno.h>
 
 void die(char const *err_msg);

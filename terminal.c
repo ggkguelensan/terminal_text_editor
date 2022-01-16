@@ -7,7 +7,8 @@ void disableRawMode(void)
 
 void enableRawMode(void)
 {
-    tcgetattr(STDIN_FILENO, &E.orig_termios);
+    if(tcgetattr(STDIN_FILENO, &E.orig_termios) < 0)
+        die("enableRawMode tcgetattr");
     atexit(disableRawMode);
 
     //struct termios raw = orig_termios;

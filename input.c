@@ -7,8 +7,10 @@ void editorProcessKeypress(void)
     switch (c)
     {
     case CTRL_KEY('q'):
-        write(STDOUT_FILENO, "\x1b[2J", 4);
-        write(STDOUT_FILENO, "\x1b[H", 3);
+        if(write(STDOUT_FILENO, "\x1b[2J", 4) < 0)
+            die("editorProcessKeypress write");
+        if(write(STDOUT_FILENO, "\x1b[H", 3) < 0)
+            die("editorProcessKeypress write");
         exit(EXIT_SUCCESS);
         break;
     }

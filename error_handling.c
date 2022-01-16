@@ -2,8 +2,8 @@
 
 void die(char const *err_msg)
 {
-    write(STDOUT_FILENO, "\x1b[2J", 4);
-    write(STDOUT_FILENO, "\x1b[H", 3);
+    if(write(STDOUT_FILENO, "\x1b[2J", 4) < 0) perror("die write");
+    if(write(STDOUT_FILENO, "\x1b[H", 3) < 0) perror("die write");
 
     perror(err_msg);
     exit(EXIT_FAILURE);
