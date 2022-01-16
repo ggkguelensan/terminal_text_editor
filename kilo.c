@@ -21,6 +21,7 @@ void enableRawMode()
 
     raw.c_iflag &= ~(IXON | ICRNL | BRKINT | ICRNL | ISTRIP);
     raw.c_oflag &= ~(OPOST);
+    raw.c_cflag &= ~(CS8);
     raw.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN);
 
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
