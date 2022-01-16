@@ -18,6 +18,11 @@ struct editorConfig E;
 
 void die(char const *err_msg)
 {
+    if(write(STDOUT_FILENO, "\x1b[2J", 4) < 0)
+    die("write \x1b[2J");
+    if(write(STDOUT_FILENO, "\x1b[H", 3) < 0)
+    die("write \x1b[H");
+
     perror(err_msg);
     exit(EXIT_FAILURE);
 }
@@ -47,7 +52,18 @@ void enableRawMode()
     raw.c_cc[VMIN] = 0;
     raw.c_cc[VTIME] = 1;
 
-    if(tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw)) die("tcsetattr");
+    if(tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw))
+    die("tcsetattr");
+}
+
+void editorDrawRows()
+{
+    int y;
+    for(y = 0; y < 24; y++)
+    {
+        if(write(STDOUT_FILENO, "~\r\n", 3))
+        die("write");
+    };
 }
 
 char editorReadKey()
@@ -63,8 +79,15 @@ char editorReadKey()
 
 void editorRefreshScreen()
 {
-    if(write(STDOUT_FILENO, "\x1b[2J", 4) < 0) die("write \x1b[2J");
-    if(write(STDOUT_FILENO, "\x1b[H", 3) < 0) die("write \x1b[H");
+    if(write(STDOUT_FILENO, "\x1b[2J", 4) < 0)
+    die("write \x1b[2J");
+    if(write(STDOUT_FILENO, "\x1b[H", 3) < 0)
+    die("write \x1b[H");
+
+    editorDrawRows();
+
+    if(write(STDOUT_FILENO, "\x1b[H", 3))
+    die("write");
 }
 
 void editorProcessKeypress()
@@ -74,6 +97,10 @@ void editorProcessKeypress()
     switch (c)
     {
     case CTRL_KEY('q'):
+        if(write(STDOUT_FILENO, "\x1b[2J", 4) < 0)
+        die("write \x1b[2J");
+        if(write(STDOUT_FILENO, "\x1b[H", 3) < 0)
+        die("write \x1b[H");
         exit(EXIT_SUCCESS);
         break;
     }
