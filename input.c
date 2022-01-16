@@ -1,6 +1,6 @@
 #include "input.h"
 
-void editorProcessKeypress(void)
+void editorProcessKeypress()
 {
     char c = editorReadKey();
 
@@ -22,7 +22,7 @@ char editorReadKey(void)
     char c;
     while((nread = read(STDIN_FILENO, &c, 1)) != 1)
     {
-        if(nread == -1 && errno != EAGAIN) perror("read");
+        if(nread == -1 && errno != EAGAIN) die("editorReadKey read");
     }
     return c;
 }

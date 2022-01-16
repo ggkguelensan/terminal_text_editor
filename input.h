@@ -2,7 +2,9 @@
 #define INPUT_H
 #endif
 
+#include "data.h"
 #include "error_handling.h"
+
 #include <errno.h>
 #include <unistd.h>
 #include <stdlib.h>

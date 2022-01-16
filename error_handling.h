@@ -2,7 +2,9 @@
 #define ERROR_HANDLING_H
 #endif
 
+#include "data.h"
 #include <stdio.h>
+
 #include <stdlib.h>
 #include <unistd.h>
 
