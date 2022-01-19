@@ -1,13 +1,8 @@
-#include "terminal.h"
-#include "input.h"
-#include "output.h"
+#include "kilo.h"
 
-#include <stdio.h>
-#include <stdio.h>
+editor_config E;
 
-struct editor_config E;
-
-void initEditior(struct editor_config E)
+void initEditor(void)
 {
     if(getWindowSize(&E.screenrows, &E.screencols) < 0)
     die("initEditior getWindowSize");
@@ -15,12 +10,12 @@ void initEditior(struct editor_config E)
 
 int main(void)
 {
-    enableRawMode(E);
-    initEditor(E);
+    enableRawMode();
+    initEditor();
 
     while(1)
     {
-        editorRefreshScreen(E);
+        editorRefreshScreen();
         editorProcessKeypress();
     };
 

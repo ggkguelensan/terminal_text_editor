@@ -1,6 +1,5 @@
 #ifndef INPUT_H
 #define INPUT_H
-#endif
 
 #include "data.h"
 #include "error_handling.h"
@@ -14,3 +13,5 @@
 
 void editorProcessKeypress(void);
 char editorReadKey(void);
+
+#endif

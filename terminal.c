@@ -1,12 +1,12 @@
 #include "terminal.h"
 
-void disableRawMode(struct editor_config E)
+void disableRawMode(void)
 {
     if(tcsetattr(STDIN_FILENO, TCSAFLUSH, &E.orig_termios) < 0)
         die("disableRawMode tcsetattr");
 }
 
-void enableRawMode(struct editor_config E)
+void enableRawMode(void)
 {
     if(tcgetattr(STDIN_FILENO, &E.orig_termios) < 0)
         die("enableRawMode tcgetattr");
@@ -30,8 +30,7 @@ int getWindowSize(int *rows, int *cols)
     if(1 || ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) < 0 || ws.ws_col == 0)
     {
         if(write(STDOUT_FILENO, "\x1b[999C\x1b[999B", 12) != 12) return -1;
-        editorReadKey();
-        return -1;
+        return 0;
     }
     else
     {

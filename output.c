@@ -1,16 +1,16 @@
 #include "output.h"
 
-void editorRefreshScreen(struct editor_config E)
+void editorRefreshScreen(void)
 {
     if(write(STDOUT_FILENO, "\x1b[2J", 4) < 0) die("editorRefreshScreen write");
     if(write(STDOUT_FILENO, "\x1b[H", 3) < 0) die("editorRefreshScreen write");
 
-    editorDrawRows(E);
+    editorDrawRows();
 
     if(write(STDOUT_FILENO, "\x1b[H", 3) < 0) die("editorRefreshScreen write");
 }
 
-void editorDrawRows(struct editor_config E)
+void editorDrawRows(void)
 {
     int row;
     for(row = 0; row < E.screenrows; row++)

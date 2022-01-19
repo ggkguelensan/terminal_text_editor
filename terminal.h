@@ -1,8 +1,8 @@
 #ifndef TERMINAL_H
 #define TERMINAL_H
-#endif
 
 #include "data.h"
+#include "kilo.h"
 #include "error_handling.h"
 
 #include <termios.h>
@@ -13,6 +13,8 @@
 #include <stdlib.h>
 #include <sys/ioctl.h>
 
-void disableRawMode(struct editor_config E);
-void enableRawMode(struct editor_config E);
+void disableRawMode(void);
+void enableRawMode(void);
 int getWindowSize(int *rows, int *cols);
+
+#endif

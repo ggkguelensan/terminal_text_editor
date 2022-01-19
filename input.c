@@ -1,6 +1,6 @@
 #include "input.h"
 
-void editorProcessKeypress()
+void editorProcessKeypress(void)
 {
     char c = editorReadKey();
 
